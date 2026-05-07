@@ -2,6 +2,12 @@
 
 A small VS Code extension for repos where JavaScript const objects live inside templates or mixed-language files.
 
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=bridgerosepetal.pretty-const)
+
+## Install
+
+Open the VS Code command palette with `F1`, run **Extensions: Install Extensions**, then search for **Pretty Const**.
+
 Run **Pretty Const: Format Const** on a selection that is either:
 
 ```jade
