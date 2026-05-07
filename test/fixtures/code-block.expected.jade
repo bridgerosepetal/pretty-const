@@ -1,0 +1,24 @@
+block variables
+	-
+		const pageName = 'example'
+		const cardData = {
+			items: [
+				{ title: 'First', href: '/first' },
+				{ title: 'Second', href: '/second' },
+			],
+		}
+
+		const callResult = buildData(
+			pageName
+		)
+
+		const bannerData = {
+			title: 'Compact',
+			actions: [
+				{ text: 'Open' },
+				{ text: 'Close' },
+			],
+		}
+
+main
+	h1= pageName

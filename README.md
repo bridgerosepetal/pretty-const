@@ -8,7 +8,10 @@ A small VS Code extension for repos where JavaScript const objects live inside t
 
 Open the VS Code command palette with `F1`, run **Extensions: Install Extensions**, then search for **Pretty Const**.
 
-Run **Pretty Const: Format Const** on a selection that is either:
+In Jade/Pug files, save the file or run **Pretty Const: Format Const** to format all
+unambiguous `- const` object/array declarations.
+
+You can also run **Pretty Const: Format Const** on a selection that is either:
 
 ```jade
 - const cards = [{title: 'One', href: '/one'}, {title: 'Two', href: '/two'}]

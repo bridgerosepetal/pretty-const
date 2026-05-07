@@ -7,11 +7,17 @@
 !/package.json
 !/package-lock.json
 !/tsconfig.json
+!/tsconfig.test.json
 !/.prettierrc
 !/.prettierrc.*
 
 !/src/
 !/src/**/*.ts
+
+!/test/
+!/test/**/*.ts
+!/test/fixtures/
+!/test/fixtures/*.jade
 
 !/assets/
 !/assets/*.png

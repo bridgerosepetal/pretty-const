@@ -2,7 +2,7 @@
 	"name": "pretty-const",
 	"displayName": "Pretty Const",
 	"description": "Format selected JavaScript const objects using project Prettier config.",
-	"version": "0.2.0",
+	"version": "0.2.2",
 	"publisher": "bridgerosepetal",
 	"icon": "assets/PC.png",
 	"license": "MIT",
@@ -33,6 +33,7 @@
 	},
 	"scripts": {
 		"compile": "tsc -p ./",
+		"test": "tsc -p ./tsconfig.test.json && node --test \"out-test/test/**/*.test.js\"",
 		"watch": "tsc -watch -p ./",
 		"package": "vsce package"
 	},
