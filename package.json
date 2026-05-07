@@ -1,0 +1,43 @@
+{
+	"name": "pretty-const",
+	"displayName": "Pretty Const",
+	"description": "Format selected JavaScript const objects using project Prettier config.",
+	"version": "0.1.1",
+	"publisher": "bridgerosepetal",
+	"icon": "assets/PC.png",
+	"license": "MIT",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "file:///C:/Users/Nick%20Work/Develop/repos/pretty-const"
+	},
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"categories": [
+		"Formatters"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "prettyConst.format",
+				"title": "Pretty Const: Format Const"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"package": "vsce package"
+	},
+	"dependencies": {
+		"prettier": "^3.5.3"
+	},
+	"devDependencies": {
+		"@types/node": "^20.14.9",
+		"@types/vscode": "^1.90.0",
+		"typescript": "^5.5.3",
+		"@vscode/vsce": "^3.2.1"
+	}
+}

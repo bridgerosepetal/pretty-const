@@ -1,0 +1,16 @@
+**
+
+!package.json
+!README.md
+!LICENSE
+
+!assets/
+!assets/PC.png
+
+!out/
+!out/**/*.js
+out/**/*.js.map
+
+!node_modules/
+!node_modules/prettier/
+!node_modules/prettier/**
