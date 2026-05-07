@@ -17,7 +17,10 @@ Run **Pretty Const: Format Const** on a selection that is either:
 or just the initializer:
 
 ```js
-;[ { title: 'One', href: '/one' }, { title: 'Two', href: '/two' }, ]
+;[
+	{ title: 'One', href: '/one' },
+	{ title: 'Two', href: '/two' },
+]
 ```
 
 The extension:

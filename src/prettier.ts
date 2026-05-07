@@ -32,6 +32,14 @@ export async function buildPrettierOptions(
 	editor: vscode.TextEditor,
 	prettierContext: PrettierContext,
 ): Promise<Record<string, unknown>> {
+	return buildPrettierOptionsForDocument(editor.document, prettierContext, editor)
+}
+
+export async function buildPrettierOptionsForDocument(
+	document: vscode.TextDocument,
+	prettierContext: PrettierContext,
+	editor?: vscode.TextEditor,
+): Promise<Record<string, unknown>> {
 	const baseOptions: Record<string, unknown> = {
 		parser: 'babel',
 	}
@@ -56,7 +64,7 @@ export async function buildPrettierOptions(
 
 	return {
 		...baseOptions,
-		...optionsFromVsCode(editor),
+		...optionsFromVsCode(document, editor),
 	}
 }
 
@@ -83,15 +91,15 @@ function findLocalPrettier(startDirectory: string): string | undefined {
 	}
 }
 
-function optionsFromVsCode(editor: vscode.TextEditor): Record<string, unknown> {
-	const editorConfig = vscode.workspace.getConfiguration('editor', editor.document.uri)
-	const prettierConfig = vscode.workspace.getConfiguration(
-		'prettier',
-		editor.document.uri,
-	)
-	const insertSpaces = editor.options.insertSpaces
-	const tabSize = editor.options.tabSize
-	const editorTabWidth = typeof tabSize === 'number' ? tabSize : 2
+function optionsFromVsCode(
+	document: vscode.TextDocument,
+	editor?: vscode.TextEditor,
+): Record<string, unknown> {
+	const editorConfig = vscode.workspace.getConfiguration('editor', document.uri)
+	const prettierConfig = vscode.workspace.getConfiguration('prettier', document.uri)
+	const insertSpaces = editor?.options.insertSpaces ?? editorConfig.get('insertSpaces')
+	const tabSize = editor?.options.tabSize ?? editorConfig.get('tabSize')
+	const editorTabWidth = getNumber(tabSize, 2)
 
 	return {
 		printWidth: getNumber(
