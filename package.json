@@ -32,7 +32,7 @@
 		"package": "vsce package"
 	},
 	"dependencies": {
-		"prettier": "^3.5.3"
+		"prettier": "3.8.3"
 	},
 	"devDependencies": {
 		"@types/node": "^20.14.9",

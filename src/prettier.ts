@@ -91,19 +91,22 @@ function optionsFromVsCode(editor: vscode.TextEditor): Record<string, unknown> {
 	)
 	const insertSpaces = editor.options.insertSpaces
 	const tabSize = editor.options.tabSize
+	const editorTabWidth = typeof tabSize === 'number' ? tabSize : 2
 
 	return {
 		printWidth: getNumber(
 			prettierConfig.get('printWidth'),
 			getNumber(editorConfig.get('wordWrapColumn'), 80),
 		),
-		tabWidth: typeof tabSize === 'number' ? tabSize : 2,
-		useTabs: insertSpaces === false,
+		tabWidth: getNumber(prettierConfig.get('tabWidth'), editorTabWidth),
+		useTabs: getBoolean(prettierConfig.get('useTabs'), insertSpaces === false),
 		semi: getBoolean(prettierConfig.get('semi'), true),
 		singleQuote: getBoolean(prettierConfig.get('singleQuote'), false),
 		trailingComma: getString(prettierConfig.get('trailingComma'), 'all'),
 		bracketSpacing: getBoolean(prettierConfig.get('bracketSpacing'), true),
+		bracketSameLine: getBoolean(prettierConfig.get('bracketSameLine'), false),
 		arrowParens: getString(prettierConfig.get('arrowParens'), 'always'),
+		endOfLine: getString(prettierConfig.get('endOfLine'), 'lf'),
 	}
 }
 
