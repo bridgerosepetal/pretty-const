@@ -47,7 +47,8 @@ describe('Prettier config resolution', () => {
 				resolveConfig: async filePath => {
 					searchedPaths.push(filePath)
 
-					return filePath === '/workspace/.prettier-config-probe.js'
+					return filePath.replace(/\\/gu, '/') ===
+						'/workspace/.prettier-config-probe.js'
 						? { semi: false, trailingComma: 'none' }
 						: null
 				},
@@ -61,9 +62,9 @@ describe('Prettier config resolution', () => {
 			semi: false,
 			trailingComma: 'none',
 		})
-		assert.deepEqual(searchedPaths, [
-			'/workspace/src/example.pug',
-			'/workspace/.prettier-config-probe.js',
-		])
+		assert.deepEqual(
+			searchedPaths.map(searchPath => searchPath.replace(/\\/gu, '/')),
+			['/workspace/src/example.pug', '/workspace/.prettier-config-probe.js'],
+		)
 	})
 })

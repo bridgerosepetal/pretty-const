@@ -35,6 +35,7 @@
 		"compile": "tsc -p ./",
 		"test": "tsc -p ./tsconfig.test.json && node --test \"out-test/test/**/*.test.js\"",
 		"watch": "tsc -watch -p ./",
+		"vscode:prepublish": "npm run compile",
 		"package": "vsce package"
 	},
 	"dependencies": {
