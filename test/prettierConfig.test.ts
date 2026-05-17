@@ -10,7 +10,7 @@ describe('Prettier config resolution', () => {
 				format: source => source,
 				resolveConfig: async (filePath, options) => {
 					assert.equal(filePath, '/workspace/src/example.jade')
-					assert.deepEqual(options, { editorconfig: true })
+					assert.deepEqual(options, { editorconfig: true, useCache: false })
 
 					return {
 						trailingComma: 'none',
@@ -37,5 +37,33 @@ describe('Prettier config resolution', () => {
 		}
 
 		assert.equal(await resolvePrettierConfig(context), undefined)
+	})
+
+	it('falls back to the workspace folder when the document path misses', async () => {
+		const searchedPaths: string[] = []
+		const context: PrettierContext = {
+			module: {
+				format: source => source,
+				resolveConfig: async filePath => {
+					searchedPaths.push(filePath)
+
+					return filePath === '/workspace/.prettier-config-probe.js'
+						? { semi: false, trailingComma: 'none' }
+						: null
+				},
+			},
+			source: 'bundled',
+			documentPath: '/workspace/src/example.pug',
+			workspaceFolderPath: '/workspace',
+		}
+
+		assert.deepEqual(await resolvePrettierConfig(context), {
+			semi: false,
+			trailingComma: 'none',
+		})
+		assert.deepEqual(searchedPaths, [
+			'/workspace/src/example.pug',
+			'/workspace/.prettier-config-probe.js',
+		])
 	})
 })

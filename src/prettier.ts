@@ -19,6 +19,7 @@ export async function loadPrettier(documentUri: vscode.Uri): Promise<PrettierCon
 			module: requireFromWorkspace('prettier') as PrettierModule,
 			source: 'workspace',
 			documentPath,
+			workspaceFolderPath: workspaceFolder?.uri.fsPath,
 		}
 	}
 
@@ -26,6 +27,7 @@ export async function loadPrettier(documentUri: vscode.Uri): Promise<PrettierCon
 		module: await import('prettier'),
 		source: 'bundled',
 		documentPath,
+		workspaceFolderPath: workspaceFolder?.uri.fsPath,
 	}
 }
 

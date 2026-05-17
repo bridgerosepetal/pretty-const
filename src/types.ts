@@ -2,7 +2,7 @@ export type PrettierModule = {
 	format(source: string, options: Record<string, unknown>): Promise<string> | string
 	resolveConfig?(
 		filePath: string,
-		options?: { editorconfig?: boolean },
+		options?: { editorconfig?: boolean; useCache?: boolean },
 	): Promise<Record<string, unknown> | null> | Record<string, unknown> | null
 }
 
@@ -21,4 +21,5 @@ export type PrettierContext = {
 	module: PrettierModule
 	source: 'workspace' | 'bundled'
 	documentPath?: string
+	workspaceFolderPath?: string
 }
