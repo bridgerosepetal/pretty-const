@@ -2,7 +2,7 @@
 	"name": "pretty-const",
 	"displayName": "Pretty Const",
 	"description": "Format selected JavaScript const objects using project Prettier config.",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"publisher": "bridgerosepetal",
 	"icon": "assets/PC.png",
 	"license": "MIT",
