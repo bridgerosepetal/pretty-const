@@ -2,6 +2,7 @@ import * as fs from 'node:fs'
 import { createRequire } from 'node:module'
 import * as path from 'node:path'
 import * as vscode from 'vscode'
+import { resolvePrettierConfig } from './prettierConfig'
 import type { PrettierContext, PrettierModule } from './types'
 
 export async function loadPrettier(documentUri: vscode.Uri): Promise<PrettierContext> {
@@ -44,21 +45,11 @@ export async function buildPrettierOptionsForDocument(
 		parser: 'babel',
 	}
 
-	if (
-		prettierContext.source === 'workspace' &&
-		prettierContext.module.resolveConfig &&
-		prettierContext.documentPath
-	) {
-		const resolvedConfig = await prettierContext.module.resolveConfig(
-			prettierContext.documentPath,
-			{
-				editorconfig: true,
-			},
-		)
-
+	const resolvedConfig = await resolvePrettierConfig(prettierContext)
+	if (resolvedConfig) {
 		return {
 			...baseOptions,
-			...(resolvedConfig ?? {}),
+			...resolvedConfig,
 		}
 	}
 
