@@ -14,9 +14,9 @@ export function prepareSelection(selectedText: string): PreparedSelection | unde
 	}
 
 	const [, prefix, body] = firstLineMatch
-	const candidate = body.trimStart()
 	const baseIndentMatch = prefix.match(/^[ \t]*/u)
 	const baseIndent = baseIndentMatch?.[0] ?? ''
+	const candidate = dedentContinuationLines(body.trimStart(), baseIndent)
 	const firstContinuationIndent = getFirstContinuationIndent(
 		withoutLeadingBlankLines,
 		baseIndent,
@@ -86,6 +86,20 @@ function getFirstContinuationIndent(
 	}
 
 	return firstIndent
+}
+
+function dedentContinuationLines(source: string, baseIndent: string): string {
+	if (baseIndent.length === 0) {
+		return source
+	}
+
+	const [firstLine = '', ...remainingLines] = source.split(/\r?\n/u)
+	return [
+		firstLine,
+		...remainingLines.map(line =>
+			line.startsWith(baseIndent) ? line.slice(baseIndent.length) : line,
+		),
+	].join('\n')
 }
 
 function getFirstIndent(lines: string[]): string | undefined {

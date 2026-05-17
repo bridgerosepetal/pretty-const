@@ -41,8 +41,43 @@ describe('Jade const formatting', () => {
 			assert.equal(applyTextReplacements(input, replacements), expected)
 		})
 	}
+
+	it('does not keep shifting template literal content indentation', async () => {
+		const input = [
+			'-',
+			'  const a = {',
+			'    text: `',
+			'      some text',
+			'    `',
+			'  }',
+		].join('\n')
+		const expected = input
+		const firstPass = applyTextReplacements(
+			input,
+			await findJadeConstReplacements(input, prettier, {
+				...options,
+				tabWidth: 2,
+				useTabs: false,
+				trailingComma: 'none',
+			}),
+		)
+		const secondPass = applyTextReplacements(
+			firstPass,
+			await findJadeConstReplacements(firstPass, prettier, {
+				...options,
+				tabWidth: 2,
+				useTabs: false,
+				trailingComma: 'none',
+			}),
+		)
+
+		assert.equal(firstPass, expected)
+		assert.equal(secondPass, expected)
+	})
 })
 
 async function readFixture(fileName: string): Promise<string> {
-	return (await readFile(path.join(fixtureDirectory, fileName), 'utf8')).trimEnd()
+	return (await readFile(path.join(fixtureDirectory, fileName), 'utf8'))
+		.replace(/\r\n/gu, '\n')
+		.trimEnd()
 }
