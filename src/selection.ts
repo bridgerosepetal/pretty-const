@@ -59,6 +59,10 @@ export function applySelectionIndent(
 	}
 
 	const formattedFirstContinuationIndent = getFirstIndent(remainingLines) ?? ''
+	const originalIndentUnit = getContinuationIndentUnit(
+		prepared.baseIndent,
+		prepared.firstContinuationIndent,
+	)
 	const indentPadding = prepared.firstContinuationIndent
 		? getIndentPadding(
 				prepared.firstContinuationIndent,
@@ -68,9 +72,32 @@ export function applySelectionIndent(
 
 	return [
 		prepared.prefix + firstLine,
-		...remainingLines.map(line =>
-			line.trim().length === 0 ? prepared.baseIndent : indentPadding + line,
-		),
+		...remainingLines.map(line => {
+			if (line.trim().length === 0) {
+				return prepared.baseIndent
+			}
+
+			const lineIndent = getFirstIndent([line])
+			if (!lineIndent) {
+				return prepared.baseIndent + line
+			}
+
+			if (originalIndentUnit && formattedFirstContinuationIndent) {
+				const indentLevel = getIndentLevel(
+					lineIndent,
+					formattedFirstContinuationIndent,
+				)
+				if (indentLevel) {
+					return (
+						prepared.baseIndent +
+						originalIndentUnit.repeat(indentLevel) +
+						line.slice(lineIndent.length)
+					)
+				}
+			}
+
+			return indentPadding + line
+		}),
 	].join('\n')
 }
 
@@ -113,4 +140,31 @@ function getIndentPadding(originalIndent: string, formattedIndent: string): stri
 	}
 
 	return originalIndent
+}
+
+function getContinuationIndentUnit(
+	baseIndent: string,
+	firstContinuationIndent?: string,
+): string | undefined {
+	if (!firstContinuationIndent?.startsWith(baseIndent)) {
+		return undefined
+	}
+
+	const indentUnit = firstContinuationIndent.slice(baseIndent.length)
+	return indentUnit.length > 0 ? indentUnit : undefined
+}
+
+function getIndentLevel(indent: string, indentUnit: string): number | undefined {
+	if (indentUnit.length === 0) {
+		return undefined
+	}
+
+	let level = 0
+	let offset = 0
+	while (indent.startsWith(indentUnit, offset)) {
+		level += 1
+		offset += indentUnit.length
+	}
+
+	return offset === indent.length && level > 0 ? level : undefined
 }

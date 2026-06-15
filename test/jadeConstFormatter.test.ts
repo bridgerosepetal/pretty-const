@@ -74,6 +74,37 @@ describe('Jade const formatting', () => {
 		assert.equal(firstPass, expected)
 		assert.equal(secondPass, expected)
 	})
+
+	it('keeps closing delimiters aligned with spaced Pug const lines', async () => {
+		const input = [
+			'section',
+			'    - const items = [',
+			'        {',
+			"            id: 'alpha'",
+			'        }',
+			'    ]',
+			'    p= items.length',
+		].join('\n')
+		const expected = [
+			'section',
+			'    - const items = [',
+			'        {',
+			"            id: 'alpha',",
+			'        },',
+			'    ]',
+			'    p= items.length',
+		].join('\n')
+		const formatted = applyTextReplacements(
+			input,
+			await findJadeConstReplacements(input, prettier, {
+				...options,
+				tabWidth: 4,
+				useTabs: true,
+			}),
+		)
+
+		assert.equal(formatted, expected)
+	})
 })
 
 async function readFixture(fileName: string): Promise<string> {
