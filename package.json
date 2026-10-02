@@ -9,7 +9,7 @@
 	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "file:///C:/Users/Nick%20Work/Develop/repos/pretty-const"
+		"url": "https://github.com/bridgerosepetal/pretty-const"
 	},
 	"engines": {
 		"vscode": "^1.90.0"
@@ -29,7 +29,18 @@
 				"command": "prettyConst.format",
 				"title": "Pretty Const: Format Const"
 			}
-		]
+		],
+		"configuration": {
+			"title": "Pretty Const",
+			"properties": {
+				"prettyConst.formatOnSave": {
+					"type": "boolean",
+					"default": true,
+					"scope": "resource",
+					"description": "Format unambiguous `- const` object/array declarations when saving Jade/Pug files."
+				}
+			}
+		}
 	},
 	"scripts": {
 		"compile": "tsc -p ./",
