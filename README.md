@@ -30,7 +30,9 @@ The extension:
 
 - formats only selected const declarations or selected object/array initializers;
 - uses the workspace-local `prettier` package when one exists;
-- loads the project Prettier config via `resolveConfig`;
+- loads the project Prettier config via `resolveConfig` (always formatting with the `babel` parser; `parser` and `plugins` from the config are ignored, so configs that use `@prettier/plugin-pug` still work);
 - falls back to the bundled Prettier package with options derived from VS Code editor settings when no project Prettier is found.
+
+Format on save is enabled by default. Set `"prettyConst.formatOnSave": false` to turn it off and only format via the command.
 
 No keybinding is registered by default. Add your own VS Code keybinding for `prettyConst.format` if you want one.

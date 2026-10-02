@@ -26,6 +26,23 @@ describe('Prettier config resolution', () => {
 		})
 	})
 
+	it('drops parser and plugins that would break babel formatting', async () => {
+		const context: PrettierContext = {
+			module: {
+				format: source => source,
+				resolveConfig: async () => ({
+					plugins: ['@prettier/plugin-pug'],
+					parser: 'pug',
+					semi: false,
+				}),
+			},
+			source: 'workspace',
+			documentPath: '/workspace/src/example.pug',
+		}
+
+		assert.deepEqual(await resolvePrettierConfig(context), { semi: false })
+	})
+
 	it('returns undefined when no project config is found', async () => {
 		const context: PrettierContext = {
 			module: {

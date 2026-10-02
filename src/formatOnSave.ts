@@ -1,3 +1,4 @@
+import * as path from 'node:path'
 import * as vscode from 'vscode'
 import { findJadeConstReplacements } from './jadeConstFormatter'
 import { buildPrettierOptionsForDocument, loadPrettier } from './prettier'
@@ -7,7 +8,7 @@ const JADE_FILE_EXTENSIONS = new Set(['.jade', '.pug'])
 
 export function registerFormatJadeConstOnSave(): vscode.Disposable {
 	return vscode.workspace.onWillSaveTextDocument(event => {
-		if (!isJadeDocument(event.document)) {
+		if (!isJadeDocument(event.document) || !isFormatOnSaveEnabled(event.document)) {
 			return
 		}
 
@@ -60,7 +61,11 @@ export function isJadeDocument(document: vscode.TextDocument): boolean {
 		return false
 	}
 
-	return JADE_FILE_EXTENSIONS.has(
-		document.uri.fsPath.slice(document.uri.fsPath.lastIndexOf('.')),
-	)
+	return JADE_FILE_EXTENSIONS.has(path.extname(document.uri.fsPath).toLowerCase())
+}
+
+function isFormatOnSaveEnabled(document: vscode.TextDocument): boolean {
+	return vscode.workspace
+		.getConfiguration('prettyConst', document.uri)
+		.get<boolean>('formatOnSave', true)
 }

@@ -43,21 +43,11 @@ export async function buildPrettierOptionsForDocument(
 	prettierContext: PrettierContext,
 	editor?: vscode.TextEditor,
 ): Promise<Record<string, unknown>> {
-	const baseOptions: Record<string, unknown> = {
-		parser: 'babel',
-	}
-
 	const resolvedConfig = await resolvePrettierConfig(prettierContext)
-	if (resolvedConfig) {
-		return {
-			...baseOptions,
-			...resolvedConfig,
-		}
-	}
 
 	return {
-		...baseOptions,
-		...optionsFromVsCode(document, editor),
+		...(resolvedConfig ?? optionsFromVsCode(document, editor)),
+		parser: 'babel',
 	}
 }
 

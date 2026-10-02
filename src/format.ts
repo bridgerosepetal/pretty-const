@@ -16,17 +16,13 @@ export async function formatPreparedSelection(
 		)
 	}
 
-	const wrapped = `const ${WRAP_CONST_NAME} = ${ensureExpressionTerminator(prepared.source)}`
+	const wrapped = `const ${WRAP_CONST_NAME} = ${ensureStatement(prepared.source)}`
 	const formatted = await prettier.format(wrapped, options)
 	const initializer = extractInitializer(stripTrailingNewline(formatted))
 	return applySelectionIndent(initializer, prepared) + prepared.suffix
 }
 
 function ensureStatement(source: string): string {
-	return /;\s*$/u.test(source) ? source : `${source};`
-}
-
-function ensureExpressionTerminator(source: string): string {
 	return /;\s*$/u.test(source) ? source : `${source};`
 }
 
